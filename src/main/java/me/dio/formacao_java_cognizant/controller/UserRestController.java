@@ -16,11 +16,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import me.dio.formacao_java_cognizant.domain.model.Account;
 import me.dio.formacao_java_cognizant.domain.model.User;
-import me.dio.formacao_java_cognizant.dto.UserDto;
 import me.dio.formacao_java_cognizant.service.UserService;
 
 @RestController
@@ -51,7 +48,7 @@ public class UserRestController {
     description = "Creates a new user based on the provided information.",
     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "UserDto containing user details", 
                                required = true,
-                               content = @Content(schema = @Schema(implementation = UserDto.class))),
+                               content = @Content(schema = @Schema(implementation = User.class))),
     responses = {
         @ApiResponse(responseCode = "201", description = "User created successfully",
             content = @Content(mediaType = "application/json",
@@ -59,15 +56,8 @@ public class UserRestController {
         @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDto userDto ){
+    public ResponseEntity<User> createUser(@RequestBody User user){
 
-        Account account = new Account();
-        account.setNumber(userDto.accountNumber());
-
-        User user = new User();
-        user.setAccount(account);
-        user.setName(userDto.name());
-        
         User createduser = userService.create(user);
 
         UriComponents location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -77,3 +67,4 @@ public class UserRestController {
     }
     
 }
+

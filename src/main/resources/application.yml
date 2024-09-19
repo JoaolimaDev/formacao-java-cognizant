@@ -2,4 +2,4 @@ spring:
   application:
     name: formacao-java-cognizant
   profiles:
-    active: dev
+    active: prod
